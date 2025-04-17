@@ -602,7 +602,7 @@ const Terminal = () => {
       {/* Main Terminal Area - Split into fixed top and scrollable history */}
       <div className="flex flex-col flex-grow overflow-hidden p-4" onClick={handleTerminalClick}> {/* Added flex-grow */}
       
-          {/* Scrollable History Area (including Intro/Help) */}
+          {/* Scrollable History Area (including Intro/Help, History, and Input) */}
           <div ref={terminalRef} className="flex-grow overflow-y-auto mb-2"> {/* Added flex-grow */}
                {/* Fixed Top Section (Intro/Help) - MOVED INSIDE */}
           <div className="flex-shrink-0">
@@ -635,13 +635,9 @@ const Terminal = () => {
             </div>
           ))}
 
-            {/* Element to scroll to */}
-            <div ref={endOfHistoryRef} />
-          </div>
-
-          {/* Input Form - Moved outside the scrollable history area but inside the main terminal container */}
+          {/* Input Form - Moved INSIDE the scrollable history area */}
           {introComplete && !showLogin && !showDashboard && !showContactForm && (
-            <form onSubmit={handleSubmit} className="mt-6 px-2 pb-2">        
+            <form onSubmit={handleSubmit} className="mt-2"> {/* Adjusted margin */}
               <div className="flex items-center relative">
                 <span className="text-green-400 mr-2">$</span>
                 <input
@@ -678,6 +674,50 @@ const Terminal = () => {
               </div>
             </form>
           )}
+
+            {/* Element to scroll to */}
+            <div ref={endOfHistoryRef} />
+          </div>
+
+          {/* Input Form - Moved outside the scrollable history area but inside the main terminal container */}
+          {/* {introComplete && !showLogin && !showDashboard && !showContactForm && (
+            <form onSubmit={handleSubmit} className="mt-6 px-2 pb-2">        
+              <div className="flex items-center relative">
+                <span className="text-green-400 mr-2">$</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown} // Use handleKeyDown for terminal input
+                  className="flex-1 bg-transparent border-none outline-none text-gray-300 placeholder-gray-500 caret-green-500 terminal-input"
+                  placeholder="Digite um comando..."
+                  autoComplete="off"
+                  disabled={!introComplete || showLogin || showDashboard || showContactForm}
+                />
+                {/* Suggestions Box */}
+                {/* {showSuggestions && suggestions.length > 0 && (
+                  <ul className="absolute bottom-full left-0 mb-1 w-full bg-gray-800 border border-gray-700 rounded shadow-lg max-h-40 overflow-y-auto z-10">
+                    {suggestions.map((suggestion, index) => (
+                      <li
+                        key={suggestion} // Use suggestion as key if unique, or index if not
+                        className={`px-3 py-1 cursor-pointer ${index === activeSuggestionIndex ? 'bg-gray-700 text-green-400' : 'text-gray-300 hover:bg-gray-600'}`}
+                        onClick={() => {
+                          setInput(suggestion);
+                          setSuggestions([]);
+                          setShowSuggestions(false);
+                          inputRef.current?.focus();
+                        }}
+                        onMouseEnter={() => setActiveSuggestionIndex(index)} // Optional: highlight on hover
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                )} */}
+              {/* </div>
+            </form>
+          )} */}
 
           {/* Modals rendered outside the main flow */}
           {showLogin && (
