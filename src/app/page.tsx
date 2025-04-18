@@ -16,6 +16,7 @@ export default function Home() {
         <div className="mt-2 text-gray-500 text-center text-xs flex-shrink-0">
           <p>© 2025 Hacker Portfolio. Todos os direitos reservados.</p>
           <p>Desenvolvido com Next.js, TypeScript e Tailwind CSS</p>
+          <p><a href="https://portfoliojanio.web.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Versão Antiga</a></p>
         </div>
       </div>
       <style jsx global>{`
