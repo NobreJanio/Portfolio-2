@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 // Função para enviar email
+// Função para enviar email (Comentada pois estamos usando Formspree)
+/*
 async function sendEmail(options: { name: string; email: string; message: string }) {
   // --- Configuração do Nodemailer ---
   // É ALTAMENTE RECOMENDADO usar variáveis de ambiente para as credenciais!
@@ -44,6 +46,7 @@ async function sendEmail(options: { name: string; email: string; message: string
     throw new Error('Falha ao enviar o email.'); // Propaga o erro
   }
 }
+*/
 
 export async function POST(request: Request) {
   try {
@@ -55,26 +58,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Todos os campos são obrigatórios.' }, { status: 400 });
     }
 
-    console.log('Dados recebidos:', { name, email, message });
+    console.log('Dados recebidos (API - Formspree agora é usado no frontend):', { name, email, message });
 
-    // --- Lógica de envio de email --- 
-    await sendEmail({ name, email, message });
+    // --- Lógica de envio de email (Comentada) ---
+    // await sendEmail({ name, email, message });
 
-    return NextResponse.json({ message: 'Mensagem enviada com sucesso!' });
+    // Como o envio agora é feito pelo frontend via Formspree, esta API pode apenas retornar sucesso
+    // ou ser removida/desativada se não for mais necessária para outros propósitos.
+    return NextResponse.json({ message: 'Requisição recebida, mas o envio é tratado pelo frontend (Formspree).' });
 
   } catch (error: any) {
-    console.error('Erro ao processar a requisição:', error);
+    console.error('Erro ao processar a requisição (API):', error);
     // Verifica se o erro é do envio de email para retornar uma mensagem mais específica
-    const errorMessage = error.message === 'Falha ao enviar o email.'
-      ? 'Erro ao tentar enviar o email. Verifique as configurações do servidor.'
-      : 'Erro interno do servidor ao processar a mensagem.';
+    // const errorMessage = error.message === 'Falha ao enviar o email.'
+    //   ? 'Erro ao tentar enviar o email. Verifique as configurações do servidor.'
+    //   : 'Erro interno do servidor ao processar a mensagem.';
+    // Simplificando a mensagem de erro, já que o envio de email está desativado aqui
+    const errorMessage = 'Erro interno do servidor ao processar a requisição.';
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
-
-// // Função de exemplo para envio de email (precisa ser implementada com Nodemailer ou similar)
-// // async function sendEmail(options: { to: string; subject: string; text: string; replyTo: string }) {
-// //   // Configurar e usar Nodemailer aqui
-// //   console.log('Enviando email com opções:', options);
-// //   // throw new Error('Função sendEmail não implementada');
-// // }

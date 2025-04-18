@@ -56,34 +56,49 @@ const Terminal = () => {
     setContactStatus('sending');
     setContactError(null);
 
+    // --- Formspree Integration --- 
+    // !!! IMPORTANTE: Substitua 'SEU_ID_DE_FORMULARIO_AQUI' pelo ID real do seu formulário Formspree !!!
+    const formspreeEndpoint = 'https://formspree.io/f/xanegjyz'; 
+
+    const formData = new FormData();
+    formData.append('name', contactName);
+    formData.append('email', contactEmail);
+    formData.append('message', contactMessage);
+
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(formspreeEndpoint, {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: contactName, email: contactEmail, message: contactMessage }),
+          'Accept': 'application/json' // Formspree recomenda este header
+        }
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || 'Falha ao enviar a mensagem.');
+        // Tenta obter a mensagem de erro do Formspree, se disponível
+        let errorMessage = 'Falha ao enviar a mensagem.';
+        try {
+          const result = await response.json();
+          errorMessage = result.error || errorMessage;
+        } catch (jsonError) {
+          // Ignora erro ao parsear JSON se a resposta não for JSON
+        }
+        throw new Error(errorMessage);
       }
 
+      // Sucesso no envio para o Formspree
       setContactStatus('success');
-      addCommandToHistory('contact --form', <div className="text-green-400">Mensagem enviada com sucesso! Formulário fechado.</div>);
+      addCommandToHistory('contact --form', <div className="text-green-400">Mensagem enviada com sucesso via Formspree! Formulário fechado.</div>);
       setContactName('');
       setContactEmail('');
       setContactMessage('');
       setShowContactForm(false); // Close form on success
 
-    } catch (error: any) {
-      console.error('Contact form error:', error);
+    } catch (error: any) { 
+      console.error('Contact form error (Formspree):', error);
       setContactStatus('error');
-      setContactError(error.message || 'Ocorreu um erro inesperado.');
-      // Optionally add an error message to history, but don't close form on error
-      addCommandToHistory('contact --form', <div className="text-red-400">Erro ao enviar: {error.message || 'Ocorreu um erro inesperado.'}</div>);
+      setContactError(error.message || 'Ocorreu um erro inesperado ao enviar para o Formspree.');
+      addCommandToHistory('contact --form', <div className="text-red-400">Erro ao enviar via Formspree: {error.message || 'Ocorreu um erro inesperado.'}</div>);
       // setShowContactForm(false); // Keep form open on error
     }
   };
@@ -382,16 +397,21 @@ const Terminal = () => {
 
   const fixedHelpMessage = 'Digite "help" para ver os comandos disponíveis.'; // Keep this
 
+  // Effect to scroll to bottom only when history changes
   useEffect(() => {
-    // Scroll to the bottom when history changes or intro completes
     endOfHistoryRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [history]);
+
+  useEffect(() => {
+    // Scroll to the bottom when history changes or intro completes -- REMOVED SCROLL FROM HERE
+    // endOfHistoryRef.current?.scrollIntoView({ behavior: 'smooth' });
 
     // Foca no input quando a introdução está completa e nenhum modal está aberto
     if (introComplete && inputRef.current && !showLogin && !showDashboard && !showContactForm) {
       // Use setTimeout to ensure focus happens after potential layout shifts/scrolls
       setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [history, introComplete, showLogin, showDashboard, showContactForm]); // Add dependencies
+  }, [introComplete, showLogin, showDashboard, showContactForm]); // Removed history dependency as it's handled separately
 
   // Effect to focus contact form input when it appears
   useEffect(() => {
@@ -584,7 +604,7 @@ const Terminal = () => {
 
   return (
     <div 
-      className="flex flex-col h-screen bg-black text-gray-300 font-mono text-sm p-2 border border-gray-700 rounded-lg shadow-lg"
+      className="flex flex-col flex-1 bg-black text-gray-300 font-mono text-sm p-2 border border-gray-700 rounded-lg shadow-lg overflow-hidden"
       // onKeyDown={handleKeyDown} // Moved to input element
       // onClick={handleTerminalClick} // Moved to inner div to avoid interfering with header/input
       // tabIndex={0} // No longer needed here
@@ -600,7 +620,8 @@ const Terminal = () => {
       </div>
 
       {/* Main Terminal Area - Split into fixed top and scrollable history */}
-      <div className="flex flex-col flex-grow overflow-hidden p-4" onClick={handleTerminalClick}> {/* Added flex-grow */}
+        <div className="flex flex-col flex-grow overflow-hidden p-4" onClick={handleTerminalClick}> {/* Added flex-grow */}
+        <div className="flex flex-col flex-grow p-4" onClick={handleTerminalClick}> {/* Added flex-grow, removed overflow-hidden */}
       
           {/* Scrollable History Area (including Intro/Help, History, and Input) */}
           <div ref={terminalRef} className="flex-grow overflow-y-auto mb-2"> {/* Added flex-grow */}
@@ -808,9 +829,9 @@ const Terminal = () => {
             </div>
           )}
         </div>
-        </div>
-      );
-    };
+   </div>
+   </div>
+ );
+  };
 
 export default Terminal;
- // Add missing closing div tag here
