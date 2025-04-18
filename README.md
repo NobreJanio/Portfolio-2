@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Interativo
 
-## Getting Started
+Um portfolio moderno e interativo desenvolvido com Next.js, apresentando um terminal interativo, sistema de autenticação e formulário de contato. O projeto combina design profissional com funcionalidades interativas para criar uma experiência única de apresentação de trabalhos e habilidades.
 
-First, run the development server:
+## Tecnologias Utilizadas
 
+- **Next.js 14** - Framework React com renderização do lado do servidor
+- **TypeScript** - Adiciona tipagem estática ao JavaScript
+- **Tailwind CSS** - Framework CSS utilitário para estilização
+- **Firebase** - Plataforma para hospedagem e autenticação
+- **Formspree** - Serviço para processamento de formulários de contato
+- **Prisma** (opcional) - ORM para gerenciamento de banco de dados
+
+## Instalação e Configuração
+
+1. Clone o repositório:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [URL_DO_SEU_REPOSITÓRIO]
+cd [NOME_DO_DIRETÓRIO]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configure as variáveis de ambiente:
+- Crie um arquivo `.env.local` na raiz do projeto
+- Adicione as variáveis necessárias seguindo o exemplo em `.env.local.example`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Execute o servidor de desenvolvimento:
+```bash
+npm run dev
+```
 
-## Learn More
+O aplicativo estará disponível em `http://localhost:3000`
 
-To learn more about Next.js, take a look at the following resources:
+## Como Usar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Terminal Interativo
+O terminal interativo permite navegar pelo portfolio usando comandos de terminal. Alguns comandos disponíveis:
+- `help` - Lista todos os comandos disponíveis
+- `about` - Exibe informações sobre o desenvolvedor
+- `projects` - Lista os projetos disponíveis
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Autenticação
+O sistema de autenticação está integrado com Firebase. Para configurar:
+1. Crie um projeto no Firebase
+2. Adicione as credenciais do Firebase ao arquivo de ambiente
+3. Configure os métodos de autenticação desejados no console do Firebase
 
-## Deploy on Vercel
+### Formulário de Contato
+O formulário de contato utiliza Formspree para processamento. Para configurar:
+1. Crie uma conta no Formspree
+2. Configure o endpoint do formulário nas variáveis de ambiente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contribuição
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contribuições são sempre bem-vindas! Para contribuir:
+
+1. Faça um Fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
